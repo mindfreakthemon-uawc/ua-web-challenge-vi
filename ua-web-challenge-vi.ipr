@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <option name="DEFAULT_COMPILER" value="Javac" />
+    <resourceExtensions />
+    <wildcardResourcePatterns>
+      <entry name="!?*.java" />
+      <entry name="!?*.form" />
+      <entry name="!?*.class" />
+      <entry name="!?*.groovy" />
+      <entry name="!?*.scala" />
+      <entry name="!?*.flex" />
+      <entry name="!?*.kt" />
+      <entry name="!?*.clj" />
+    </wildcardResourcePatterns>
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="false">
+        <processorPath useClasspath="true" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="DependencyValidationManager">
+    <option name="SKIP_IMPORT_STATEMENTS" value="false" />
+  </component>
+  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
+  <component name="IdProvider" IDEtalkID="B28D080CE1873BCC41FDAEAE494E52B8" />
+  <component name="ProjectCodeStyleSettingsManager">
+    <option name="PER_PROJECT_SETTINGS">
+      <value>
+        <option name="OTHER_INDENT_OPTIONS">
+          <value>
+            <option name="INDENT_SIZE" value="4" />
+            <option name="CONTINUATION_INDENT_SIZE" value="8" />
+            <option name="TAB_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+            <option name="LABEL_INDENT_SIZE" value="0" />
+            <option name="LABEL_INDENT_ABSOLUTE" value="false" />
+            <option name="USE_RELATIVE_INDENTS" value="false" />
+          </value>
+        </option>
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
+        <codeStyleSettings language="CSS">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="CoffeeScript">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="Groovy">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="HTML">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JAVA">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JSP">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JSPX">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="Jade">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="2" />
+            <option name="TAB_SIZE" value="2" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="JavaScript">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="LESS">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="4" />
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="Python">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="SASS">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="4" />
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="SCSS">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="4" />
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="Stylus">
+          <indentOptions>
+            <option name="INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="TypeScript">
+          <indentOptions>
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+        <codeStyleSettings language="XML">
+          <indentOptions>
+            <option name="CONTINUATION_INDENT_SIZE" value="4" />
+            <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
+          </indentOptions>
+        </codeStyleSettings>
+      </value>
+    </option>
+    <option name="USE_PER_PROJECT_SETTINGS" value="true" />
+  </component>
+  <component name="ProjectDictionaryState">
+    <dictionary name="mindfreakthemon">
+      <words>
+        <w>jshint</w>
+      </words>
+    </dictionary>
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Gradle</id>
+          </State>
+          <State>
+            <id>Probable bugsGradle</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectKey">
+    <option name="state" value="https://github.com/mindfreakthemon/ua-web-challenge-vi.git" />
+  </component>
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$//ua-web-challenge-vi.iml" filepath="$PROJECT_DIR$//ua-web-challenge-vi.iml" />
+    </modules>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="VcsDirectoryMappings">
+    <mapping directory="" vcs="Git" />
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.7</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.20000002" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+
