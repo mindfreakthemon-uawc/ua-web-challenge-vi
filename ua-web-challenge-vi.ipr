@@ -191,6 +191,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ua-web-challenge-vi.iml" filepath="$PROJECT_DIR$/ua-web-challenge-vi.iml" />
       <module fileurl="file://$PROJECT_DIR$//ua-web-challenge-vi.iml" filepath="$PROJECT_DIR$//ua-web-challenge-vi.iml" />
     </modules>
   </component>
