@@ -65,6 +65,12 @@ module.exports = function (grunt) {
 			js: {
 				files: ['src/js/**/*.js'],
 				tasks: ['copy:main']
+			},
+			livereload: {
+				files: ['root/**'],
+				options: {
+					livereload: true
+				}
 			}
 		},
 
@@ -72,9 +78,15 @@ module.exports = function (grunt) {
 			options: {
 				logConcurrentOutput: true
 			},
-			build: ['stylus:main', 'jade:main', 'copy:main', 'copy:lib'],
-			watch: ['watch:stylus', 'watch:jade', 'watch:js'],
-			run: ['concurrent:watch', 'connect:main']
+			build: {
+				tasks: ['stylus:main', 'jade:main', 'copy:main', 'copy:lib']
+			},
+			watch: {
+				tasks: ['watch:stylus', 'watch:jade', 'watch:js', 'watch:livereload']
+			},
+			run: {
+				tasks: ['concurrent:watch', 'connect:main']
+			}
 		}
 	});
 
