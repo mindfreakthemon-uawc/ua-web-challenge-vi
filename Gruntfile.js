@@ -1,3 +1,5 @@
+var path = require('path');
+
 module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
@@ -23,16 +25,28 @@ module.exports = function (grunt) {
 		jade: {
 			main: {
 				expand: true,
-				cwd: 'src/jade',
+				cwd: 'src/html',
 				src: ['**/*.jade'],
 				dest: 'root',
 				ext: '.html'
+			},
+			templates: {
+				files: {
+					'root/js/templates.js': 'src/templates/**/*.jade'
+				},
+				options: {
+					amd: true,
+					client: true,
+					processName: function (name) {
+						return path.basename(name, '.jade');
+					}
+				}
 			}
 		},
 		stylus: {
 			main: {
 				expand: true,
-				cwd: 'src/stylus',
+				cwd: 'src/styles',
 				src: ['**/*.styl'],
 				dest: 'root/css',
 				ext: '.css'
@@ -54,13 +68,17 @@ module.exports = function (grunt) {
 		},
 
 		watch: {
-			stylus: {
-				files: ['src/stylus/**/*.styl'],
+			styles: {
+				files: ['src/styles/**/*.styl'],
 				tasks: ['stylus:main']
 			},
-			jade: {
-				files: ['src/jade/**/*.jade'],
+			html: {
+				files: ['src/html/**/*.jade'],
 				tasks: ['jade:main']
+			},
+			templates: {
+				files: ['src/templates/**/*.jade'],
+				tasks: ['jade:templates']
 			},
 			js: {
 				files: ['src/js/**/*.js'],
@@ -79,10 +97,10 @@ module.exports = function (grunt) {
 				logConcurrentOutput: true
 			},
 			build: {
-				tasks: ['stylus:main', 'jade:main', 'copy:main', 'copy:lib']
+				tasks: ['stylus:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
 			},
 			watch: {
-				tasks: ['watch:stylus', 'watch:jade', 'watch:js', 'watch:livereload']
+				tasks: ['watch:styles', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']

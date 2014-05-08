@@ -1,0 +1,43 @@
+doctype html
+html
+	head
+		title Main page
+
+		link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap.min.css')
+		link(rel='stylesheet', href='/lib/bootstrap/css/bootstrap-theme.min.css')
+		link(rel='stylesheet', href='/lib/cropper/cropper.min.css')
+		link(rel='stylesheet', href='/css/index.css')
+
+		script(src='/lib/require.js', data-main='/js/main.js')
+body
+	.container
+		form.container-fluid#form
+			.row
+				.col-md-3
+					h4 Choose File
+					input(type='file', id='image', accept='.jpg;.png')
+				.col-md-3
+					h4 Available filters
+					ul.list-unstyled#filter-list
+				.col-md-3
+					h4 Select area
+					.form-group
+						label X1
+						input.form-control(type='number', name='x1')
+					.form-group
+						label Y1
+						input.form-control(type='number', name='y1')
+					.form-group
+						label X2
+						input.form-control(type='number', name='x2')
+					.form-group
+						label Y2
+						input.form-control(type='number', name='y2')
+				.col-md-3
+					h4 Filter options
+					#filter-options
+						| Select filter
+
+
+		canvas#canvas
+
