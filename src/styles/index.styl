@@ -2,12 +2,28 @@
 	max-width: 100%;
 }
 
+#image {
+	opacity: 0;
+}
+	
+#image-wrapper {
+	position: absolute;
+}
+
 #scene {
 	background: #eee;
 	border: 1px solid #ccc;
 	padding: 20px 0;
 	margin: 20px 0;
 	position: relative;
+
+	.cropper-container {
+		background: none;
+
+		img {
+			opacity: 0;
+		}
+	}
 }
 
 transform(args...)

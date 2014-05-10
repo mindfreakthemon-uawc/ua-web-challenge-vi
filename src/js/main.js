@@ -10,9 +10,15 @@ require({
 			'bootstrap' : ['jquery']
 		}
 	},
-	['filters/all', 'templates', 'worker'],
-	function (filters, templates, worker) {
+	['filters/all', 'templates', 'workerFactory', 'canvasCropper'],
+	function (filters, templates, workerFactory, canvasCropper) {
+		var originalImageData,
+			safeTimeout,
+			worker;
+
 		var loader = document.getElementById('loader'),
+			file = document.getElementById('file'),
+			scene = document.getElementById('scene'),
 			image = document.getElementById('image'),
 			list = document.getElementById('filter-list'),
 			options = document.getElementById('filter-options'),
@@ -32,78 +38,91 @@ require({
 			y2 = document.getElementById('y2');
 
 		/**
-		 * Variable for saving unsaved filter
-		 * @type ImageData
-		 */
-		var originalImageData;
-
-		worker.addEventListener('message', function (e) {
-			context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
-
-			// hide loader when necessary
-			var i = +loader.dataset.waiting;
-
-			if (i === 1) {
-				loader.classList.add('hidden');
-
-				loader.dataset.waiting = 0;
-			} else {
-				loader.dataset.waiting = i - 1;
-			}
-		});
-
-		/**
 		 * When user selects an image
 		 */
-		image.addEventListener('change', function (e) {
-			var file = e.target.files[0],
-				img = document.createElement('img');
+		file.addEventListener('change', function (e) {
+			var fileEntry = e.target.files[0];
 
-			img.addEventListener('load', function () {
-				URL.revokeObjectURL(file);
-
-				var w = img.naturalWidth,
-					h = img.naturalHeight;
+			image.addEventListener('load', function () {
+				var w = image.naturalWidth,
+					h = image.naturalHeight;
 
 				x1.value = 0;
 				y1.value = 0;
 				x2.value = x2.max = x1.max = w;
 				y2.value = y2.max = y1.max = h;
 
-//				canvas.style.width = w + 'px';
-//				canvas.style.height = h + 'px';
 				canvas.width = w;
 				canvas.height = h;
 
 				context.clearRect(0, 0, w, h);
-				context.drawImage(img, 0, 0);
+				context.drawImage(image, 0, 0);
 
+				// save initial imageData
 				originalImageData = context.getImageData(0, 0, w, h);
+
+				// create new worker
+				worker = workerFactory();
+
+				worker.addEventListener('message', function (e) {
+					context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
+
+					// hide loader when necessary
+					var i = +loader.dataset.waiting;
+
+					if (i === 1) {
+						loader.classList.add('hidden');
+						loader.dataset.waiting = 0;
+					} else {
+						loader.dataset.waiting = i - 1;
+					}
+				});
+
+				// initial render
+				updateFilterOptions();
 
 				// hide upload form
 				// and show controls
 				form.classList.remove('hidden');
 				canvas.classList.remove('hidden');
 				upload.classList.add('hidden');
+
+				canvasCropper.setup(function (data) {
+					x1.value = data.x1;
+					y1.value = data.y1;
+					x2.value = data.x2;
+					y2.value = data.y2;
+
+					// safe timeout for serial updates
+					clearTimeout(safeTimeout);
+					safeTimeout = setTimeout(updateFilterContext, 100);
+				});
+
+				URL.revokeObjectURL(fileEntry);
 			});
 
-			img.src = URL.createObjectURL(file);
-
-			// initial render
-			updateFilterOptions();
+			image.src = URL.createObjectURL(fileEntry);
 		});
 
 		/**
 		 * When user clicks on unload button
 		 */
 		unload.addEventListener('click', function (e) {
-			image.value = null;
+			file.value = null;
 
 			// hide controls
 			// and show upload form
 			form.classList.add('hidden');
 			canvas.classList.add('hidden');
 			upload.classList.remove('hidden');
+
+			canvasCropper.clear();
+
+			// terminating worker
+			worker.terminate();
+
+			// clear timeout just to be sure
+			clearTimeout(safeTimeout);
 		});
 
 		/**
@@ -144,11 +163,23 @@ require({
 		});
 
 		/**
+		 * When user changes some parameters in the control form
+		 */
+		form.addEventListener('change', function () {
+			// safe timeout for serial updates
+			clearTimeout(safeTimeout);
+			safeTimeout = setTimeout(updateFilterContext, 500);
+		});
+
+		form.addEventListener('submit', function (e) {
+			e.preventDefault();
+		});
+
+		/**
 		 * @param [filterName]
 		 */
 		function updateFilterOptions(filterName) {
-			var filter = filters[filterName],
-				input;
+			var filter = filters[filterName];
 
 			options.innerHTML = templates['options'](filter);
 
@@ -163,24 +194,33 @@ require({
 				cancel.classList.add('disabled');
 				cancel.disabled = true;
 
-				// unselecting filters
-				form.elements.filterName.checked = false;
-
-				input = list.querySelector('.active');
-
-				if (input) {
-					input.classList.remove('active');
+				if (form.elements.filterName instanceof NodeList) {
+					// if there is more than one filter,
+					// uncheck them all
+					Array.prototype.forEach.call(form.elements.filterName,
+						function (input) {
+							input.checked = false;
+						});
+				} else {
+					form.elements.filterName.checked = false;
 				}
 			}
 		}
 
 		/**
-		 * Update current filter context with selected params
+		 *
 		 */
 		function updateFilterContext() {
 			var filterName = form.elements.filterName.value,
 				filter = filters[filterName],
 				options = {};
+
+			if (!filter) {
+				return;
+			}
+
+			// reset context to saved state
+			context.putImageData(originalImageData, 0, 0);
 
 			// gathering options for filter
 			Object.keys(filter.options)
@@ -188,14 +228,19 @@ require({
 					options[optionName] = form.elements[optionName].value | 0;
 				});
 
+			var x1val = +x1.value,
+				y1val = +y1.value,
+				x2val = +x2.value,
+				y2val = +y2.value;
+
 			worker.postMessage({
 				filterName: filterName,
-				imageData: context.getImageData(+x1.value, +y1.value, +x2.value, +y2.value),
+				imageData: context.getImageData(x1val, y1val, x2val - x1val, y2val - y1val),
 				options: options,
-				x1: x1.value,
-				y1: y1.value,
-				x2: x2.value,
-				y2: y2.value
+				x1: x1val,
+				y1: y1val,
+				x2: x2val,
+				y2: y2val
 			});
 
 			// increment loader count
@@ -203,33 +248,7 @@ require({
 			loader.classList.remove('hidden');
 		}
 
-		/**
-		 * When user changes some parameters in the control form
-		 */
-		form.addEventListener('change', function () {
-			if (!form.elements.filterName.value) {
-				// don't do anything w/o selected filter
-				return;
-			}
-
-			// safe timeout for serial updates
-			clearTimeout(form.dataset.safeTimeout);
-
-			form.dataset.safeTimeout = setTimeout(function () {
-				// reset context to saved state
-				context.putImageData(originalImageData, 0, 0);
-
-				updateFilterContext();
-			}, 1000);
-		});
-
-		form.addEventListener('submit', function (e) {
-			e.preventDefault();
-		});
-
-		/**
-		 * Preparing radio-boxes for filters
-		 */
+		// preparing radio-boxes for filters
 		list.innerHTML = templates['filters']({
 			filters: filters
 		});
