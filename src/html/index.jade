@@ -46,14 +46,15 @@ body
 					h4 Filter options
 					#filter-options
 			.row
+				.col-xs-3.col-xs-offset-6
+					button#apply.disabled.form-control.btn.btn-primary.btn-block(type='button') Apply
+				.col-xs-3
+					button#cancel.disabled.form-control.btn.btn-danger.btn-block(type='button') Cancel
+			#scene.row.text-center
+				#loader.hidden &#8635;
+				canvas#canvas
+			.row
 				.col-xs-3
 					button#unload.form-control.btn.btn-default.btn-block(type='button') Unload
 				.col-xs-3
 					button#save.form-control.btn.btn-success.btn-block(type='button') Save
-				.col-xs-3
-					button#apply.disabled.form-control.btn.btn-primary.btn-block(type='button') Apply
-				.col-xs-3
-					button#cancel.disabled.form-control.btn.btn-danger.btn-block(type='button') Cancel
-
-		canvas#canvas
-

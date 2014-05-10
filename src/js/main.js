@@ -12,7 +12,8 @@ require({
 	},
 	['filters/all', 'templates', 'worker'],
 	function (filters, templates, worker) {
-		var image = document.getElementById('image'),
+		var loader = document.getElementById('loader'),
+			image = document.getElementById('image'),
 			list = document.getElementById('filter-list'),
 			options = document.getElementById('filter-options'),
 			canvas = document.getElementById('canvas'),
@@ -38,6 +39,17 @@ require({
 
 		worker.addEventListener('message', function (e) {
 			context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
+
+			// hide loader when necessary
+			var i = +loader.dataset.waiting;
+
+			if (i === 1) {
+				loader.classList.add('hidden');
+
+				loader.dataset.waiting = 0;
+			} else {
+				loader.dataset.waiting = i - 1;
+			}
 		});
 
 		/**
@@ -129,7 +141,6 @@ require({
 		 */
 		list.addEventListener('change', function (e) {
 			updateFilterOptions(e.target.value);
-			updateFilterContext();
 		});
 
 		/**
@@ -186,6 +197,10 @@ require({
 				x2: x2.value,
 				y2: y2.value
 			});
+
+			// increment loader count
+			loader.dataset.waiting = (loader.dataset.waiting | 0) + 1;
+			loader.classList.remove('hidden');
 		}
 
 		/**
@@ -197,10 +212,15 @@ require({
 				return;
 			}
 
-			// reset context to saved state
-			context.putImageData(originalImageData, 0, 0);
+			// safe timeout for serial updates
+			clearTimeout(form.dataset.safeTimeout);
 
-			updateFilterContext();
+			form.dataset.safeTimeout = setTimeout(function () {
+				// reset context to saved state
+				context.putImageData(originalImageData, 0, 0);
+
+				updateFilterContext();
+			}, 1000);
 		});
 
 		form.addEventListener('submit', function (e) {

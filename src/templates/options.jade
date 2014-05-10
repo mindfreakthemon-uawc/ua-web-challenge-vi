@@ -2,6 +2,6 @@ if name
 	each v, k in options
 		.form-group
 			label= v.label
-			input.form-control(type=v.type, min=v.min, max=v.max, name=k, value=v.value)
+			input(type=v.type, min=v.min, max=v.max, name=k, value=v.value)
 else
-	.text-center.panel Select filter
+	p.text-center Select filter

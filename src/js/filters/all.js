@@ -1,4 +1,4 @@
-define(['./gaussian'],
+define(['./gaussian', './median'],
 	function () {
 		var map = {};
 

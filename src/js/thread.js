@@ -9,7 +9,7 @@ require({
 			var data = e.data,
 				filter = filters[data.filterName];
 
-			filter.runner(data.imageData, data.options);
+			filter.runner(data.imageData, data.options, data);
 
 			self.postMessage(data);
 		});
