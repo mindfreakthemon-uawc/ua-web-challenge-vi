@@ -11,9 +11,7 @@ require({
 
 			filter.runner(data.imageData, data.options);
 
-			self.postMessage({
-				imageData: data.imageData
-			});
+			self.postMessage(data);
 		});
 	}
 );

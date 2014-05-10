@@ -1,0 +1,5 @@
+each v, k in filters
+	.radio
+		label
+			input(type='radio', name='filterName', value=v.name)
+			= v.label

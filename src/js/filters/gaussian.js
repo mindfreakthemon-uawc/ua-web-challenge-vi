@@ -290,6 +290,7 @@ define(function () {
 				label: 'Radius',
 				min: 1,
 				max: mul_table.length,
+				value: 10,
 				type: 'number'
 			}
 		}
