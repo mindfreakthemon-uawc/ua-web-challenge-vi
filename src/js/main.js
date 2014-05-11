@@ -10,19 +10,17 @@ require({
 			'bootstrap' : ['jquery']
 		}
 	},
-	['filters/all', 'templates', 'canvasCropper'],
-	function (filters, templates, canvasCropper) {
+	['filters', 'templates', 'area', 'loader', 'options'],
+	function (filters, templates, area, loader, options) {
 		var fileEntry,
 			originalImageData,
 			safeTimeout,
 			worker;
 
-		var loader = document.getElementById('loader'),
-			file = document.getElementById('file'),
+		var file = document.getElementById('file'),
 			scene = document.getElementById('scene'),
 			image = document.getElementById('image'),
 			list = document.getElementById('filter-list'),
-			options = document.getElementById('filter-options'),
 			canvas = document.getElementById('canvas'),
 			context = canvas.getContext('2d');
 
@@ -71,19 +69,11 @@ require({
 			worker.addEventListener('message', function (e) {
 				context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
 
-				// hide loader when necessary
-				var i = +loader.dataset.waiting;
-
-				if (i === 1) {
-					loader.classList.add('hidden');
-					loader.dataset.waiting = 0;
-				} else {
-					loader.dataset.waiting = i - 1;
-				}
+				loader.hide();
 			});
 
 			// initial render
-			updateFilterOptions();
+			options.update();
 
 			// hide upload form
 			// and show controls
@@ -91,7 +81,7 @@ require({
 			canvas.classList.remove('hidden');
 			upload.classList.add('hidden');
 
-			canvasCropper.setup(function (data) {
+			area.setup(function (data) {
 				x1.value = data.x1;
 				y1.value = data.y1;
 				x2.value = data.x2;
@@ -117,7 +107,7 @@ require({
 			canvas.classList.add('hidden');
 			upload.classList.remove('hidden');
 
-			canvasCropper.clear();
+			area.clear();
 
 			// terminating worker
 			worker.terminate();
@@ -132,7 +122,7 @@ require({
 		apply.addEventListener('click', function () {
 			originalImageData = context.getImageData(0, 0, canvas.width, canvas.height);
 
-			updateFilterOptions();
+			options.update();
 		});
 
 		/**
@@ -141,7 +131,7 @@ require({
 		cancel.addEventListener('click', function () {
 			context.putImageData(originalImageData, 0, 0);
 
-			updateFilterOptions();
+			options.update();
 		});
 
 		/**
@@ -160,7 +150,7 @@ require({
 		 * When user selects filters, display filter's options
 		 */
 		list.addEventListener('change', function (e) {
-			updateFilterOptions(e.target.value);
+			options.update(e.target.value);
 		});
 
 		/**
@@ -175,38 +165,6 @@ require({
 		form.addEventListener('submit', function (e) {
 			e.preventDefault();
 		});
-
-		/**
-		 * @param [filterName]
-		 */
-		function updateFilterOptions(filterName) {
-			var filter = filters[filterName];
-
-			options.innerHTML = templates['options'](filter);
-
-			if (filterName) {
-				apply.classList.remove('disabled');
-				apply.disabled = false;
-				cancel.classList.remove('disabled');
-				cancel.disabled = false;
-			} else {
-				apply.classList.add('disabled');
-				apply.disabled = true;
-				cancel.classList.add('disabled');
-				cancel.disabled = true;
-
-				if (form.elements.filterName instanceof NodeList) {
-					// if there is more than one filter,
-					// uncheck them all
-					Array.prototype.forEach.call(form.elements.filterName,
-						function (input) {
-							input.checked = false;
-						});
-				} else {
-					form.elements.filterName.checked = false;
-				}
-			}
-		}
 
 		/**
 		 *
@@ -253,9 +211,7 @@ require({
 				y2: y2val
 			});
 
-			// increment loader count
-			loader.dataset.waiting = (loader.dataset.waiting | 0) + 1;
-			loader.classList.remove('hidden');
+			loader.show();
 		}
 
 		// preparing radio-boxes for filters
