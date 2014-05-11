@@ -10,6 +10,8 @@ define(['jquery', 'cropper'],
 			$parent = $image.parent();
 
 		function setupImageCropper(callback) {
+			var data;
+
 			$image
 				.cropper({
 					data: {
@@ -37,7 +39,15 @@ define(['jquery', 'cropper'],
 
 			$cropper
 				.on('click.cc', function () {
-					$image.cropper($image.data('cropper').active ? 'disable' : 'enable');
+					var isActive = $image.data('cropper').active;
+
+					if (isActive) {
+						data = $image.cropper('getData');
+						$image.cropper('disable');
+					} else {
+						$image.data('cropper').defaults.data = data;
+						$image.cropper('enable');
+					}
 				});
 		}
 
