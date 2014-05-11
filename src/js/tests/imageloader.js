@@ -29,9 +29,9 @@ define(function () {
 				returning(modifiedImageData, originalImageData);
 			});
 
-			img.src = '/img/html5_triforce_' + name + '.png';
+			img.src = 'img/html5_triforce_' + name + '.png';
 		});
 
-		img.src = '/img/html5_triforce.png';
+		img.src = 'img/html5_triforce.png';
 	};
 });

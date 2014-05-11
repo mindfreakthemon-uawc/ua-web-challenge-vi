@@ -1,5 +1,5 @@
 require({
-		baseUrl: '/js'
+		baseUrl: 'js'
 	}, [
 		'tests/filters/gaussian-test',
 		'tests/filters/median-test',
