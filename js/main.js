@@ -1,5 +1,5 @@
 require({
-		baseUrl: '/js',
+		baseUrl: 'js',
 		paths: {
 			jquery: '../lib/jquery-2.1.1.min',
 			cropper: '../lib/cropper/cropper.min',
@@ -64,7 +64,7 @@ require({
 			originalImageData = context.getImageData(0, 0, w, h);
 
 			// create new worker
-			worker = new Worker('/js/thread.js');
+			worker = new Worker('js/thread.js');
 
 			worker.addEventListener('message', function (e) {
 				context.putImageData(e.data.imageData, e.data.x1, e.data.y1);

@@ -1,7 +1,7 @@
-importScripts('/lib/require.js');
+importScripts('../lib/require.js');
 
 require({
-		baseUrl: '/js'
+		baseUrl: '.'
 	},
 	['filters'],
 	function (filters) {
