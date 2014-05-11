@@ -15,14 +15,14 @@ define(['jquery', 'cropper'],
 					data: {
 						x1: 0,
 						y1: 0,
-						width: canvas.clientWidth,
-						height: canvas.clientHeight
+						width: image.naturalWidth,
+						height: image.naturalHeight
 					},
 					done: callback
 				});
 
 			$window
-				.on('resize.ic', function () {
+				.on('resize.cc', function () {
 					$image.cropper('disable');
 
 					$parent
@@ -33,15 +33,21 @@ define(['jquery', 'cropper'],
 
 					$image.cropper('enable');
 				})
-				.trigger('resize.ic');
+				.trigger('resize.cc');
 
-			$cropper.on('click', function () {
-				$image.cropper($image.data('cropper').active ? 'disable' : 'enable');
-			});
+			$cropper
+				.on('click.cc', function () {
+					$image.cropper($image.data('cropper').active ? 'disable' : 'enable');
+				});
 		}
 
 		function clearImageCropper() {
-			$window.off('resize.ic');
+			$window
+				.add($cropper)
+				.off('.cc');
+
+			$image.cropper('disable');
+			$image.data('cropper', false);
 		}
 
 		return {

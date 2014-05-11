@@ -6,29 +6,36 @@ define(function () {
 	function median(imageData, options) {
 		var pixels = imageData.data;
 
-		var t, x, y, c, u, v, windowIndex, imageIndex;
+		var x, y, c0, c1, c2, u, v, windowIndex, imageIndex;
 
-		var mid = Math.floor(Math.pow(options.window, 2) / 2);
+		var mid = Math.floor(
+				Math.pow(options.window, 2) / 2);
 
-		for (t = 0; t < 3; t++) { // 3 - RGB
-			for (x = 0; x < imageData.width; x++) {
-				for (y = 0; y < imageData.height; y++) {
-					c = [];
+		for (x = 0; x < imageData.width; x++) {
+			for (y = 0; y < imageData.height; y++) {
+				c0 = [];
+				c1 = [];
+				c2 = [];
 
-					for (u = 0; u < options.window; u++) {
-						for (v = 0; v < options.window; v++) {
-							windowIndex = ((x + u) + (y + v) * imageData.width) * 4; // 4 - [RGBA]
+				imageIndex = (x + y * imageData.width) * 4;
 
-							c.push(pixels[windowIndex + t]);
-						}
+				for (u = 0; u < options.window; u++) {
+					for (v = 0; v < options.window; v++) {
+						windowIndex = (imageIndex + (u + v * imageData.width) * 4) % pixels.length;
+
+						c0.push(pixels[windowIndex + 0]);
+						c1.push(pixels[windowIndex + 1]);
+						c2.push(pixels[windowIndex + 2]);
 					}
-
-					c.sort();
-
-					imageIndex = (x + y * imageData.width) * 4;
-
-					pixels[imageIndex + t] = c[mid];
 				}
+
+				c0.sort();
+				c1.sort();
+				c2.sort();
+
+				pixels[imageIndex + 0] = c0[mid];
+				pixels[imageIndex + 1] = c1[mid];
+				pixels[imageIndex + 2] = c2[mid];
 			}
 		}
 	}

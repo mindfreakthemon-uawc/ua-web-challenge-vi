@@ -10,9 +10,10 @@ require({
 			'bootstrap' : ['jquery']
 		}
 	},
-	['filters/all', 'templates', 'workerFactory', 'canvasCropper'],
-	function (filters, templates, workerFactory, canvasCropper) {
-		var originalImageData,
+	['filters/all', 'templates', 'canvasCropper'],
+	function (filters, templates, canvasCropper) {
+		var fileEntry,
+			originalImageData,
 			safeTimeout,
 			worker;
 
@@ -41,73 +42,73 @@ require({
 		 * When user selects an image
 		 */
 		file.addEventListener('change', function (e) {
-			var fileEntry = e.target.files[0];
-
-			image.addEventListener('load', function () {
-				var w = image.naturalWidth,
-					h = image.naturalHeight;
-
-				x1.value = 0;
-				y1.value = 0;
-				x2.value = x2.max = x1.max = w;
-				y2.value = y2.max = y1.max = h;
-
-				canvas.width = w;
-				canvas.height = h;
-
-				context.clearRect(0, 0, w, h);
-				context.drawImage(image, 0, 0);
-
-				// save initial imageData
-				originalImageData = context.getImageData(0, 0, w, h);
-
-				// create new worker
-				worker = workerFactory();
-
-				worker.addEventListener('message', function (e) {
-					context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
-
-					// hide loader when necessary
-					var i = +loader.dataset.waiting;
-
-					if (i === 1) {
-						loader.classList.add('hidden');
-						loader.dataset.waiting = 0;
-					} else {
-						loader.dataset.waiting = i - 1;
-					}
-				});
-
-				// initial render
-				updateFilterOptions();
-
-				// hide upload form
-				// and show controls
-				form.classList.remove('hidden');
-				canvas.classList.remove('hidden');
-				upload.classList.add('hidden');
-
-				canvasCropper.setup(function (data) {
-					x1.value = data.x1;
-					y1.value = data.y1;
-					x2.value = data.x2;
-					y2.value = data.y2;
-
-					// safe timeout for serial updates
-					clearTimeout(safeTimeout);
-					safeTimeout = setTimeout(updateFilterContext, 100);
-				});
-
-				URL.revokeObjectURL(fileEntry);
-			});
+			fileEntry = e.target.files[0];
 
 			image.src = URL.createObjectURL(fileEntry);
+		});
+
+		image.addEventListener('load', function () {
+			var w = image.naturalWidth,
+				h = image.naturalHeight;
+
+			x1.value = 0;
+			y1.value = 0;
+			x2.value = x2.max = x1.max = w;
+			y2.value = y2.max = y1.max = h;
+
+			canvas.width = w;
+			canvas.height = h;
+
+			context.clearRect(0, 0, w, h);
+			context.drawImage(image, 0, 0);
+
+			// save initial imageData
+			originalImageData = context.getImageData(0, 0, w, h);
+
+			// create new worker
+			worker = new Worker('/js/thread.js');
+
+			worker.addEventListener('message', function (e) {
+				context.putImageData(e.data.imageData, e.data.x1, e.data.y1);
+
+				// hide loader when necessary
+				var i = +loader.dataset.waiting;
+
+				if (i === 1) {
+					loader.classList.add('hidden');
+					loader.dataset.waiting = 0;
+				} else {
+					loader.dataset.waiting = i - 1;
+				}
+			});
+
+			// initial render
+			updateFilterOptions();
+
+			// hide upload form
+			// and show controls
+			form.classList.remove('hidden');
+			canvas.classList.remove('hidden');
+			upload.classList.add('hidden');
+
+			canvasCropper.setup(function (data) {
+				x1.value = data.x1;
+				y1.value = data.y1;
+				x2.value = data.x2;
+				y2.value = data.y2;
+
+				// safe timeout for serial updates
+				clearTimeout(safeTimeout);
+				safeTimeout = setTimeout(updateFilterContext, 100);
+			});
+
+			URL.revokeObjectURL(fileEntry);
 		});
 
 		/**
 		 * When user clicks on unload button
 		 */
-		unload.addEventListener('click', function (e) {
+		unload.addEventListener('click', function () {
 			file.value = null;
 
 			// hide controls
@@ -225,7 +226,16 @@ require({
 			// gathering options for filter
 			Object.keys(filter.options)
 				.forEach(function (optionName) {
-					options[optionName] = form.elements[optionName].value | 0;
+					var option = filter.options[optionName];
+
+					switch (option.type) {
+						case 'checkbox':
+							options[optionName] = form.elements[optionName].checked;
+							break;
+						case 'range':
+							options[optionName] = parseFloat(form.elements[optionName].value);
+							break;
+					}
 				});
 
 			var x1val = +x1.value,

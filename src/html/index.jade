@@ -43,18 +43,20 @@ body
 					.row
 						.col-xs-12
 							.form-group
-								button#cropper.btn.btn-block.btn-default Toggle Canvas Cropper
-				.col-md-4
-					h4 Available filters
-					#filter-list
-				.col-md-4
-					h4 Filter options
-					#filter-options
-			.row
-				.col-xs-3.col-xs-offset-6
-					button#apply.disabled.form-control.btn.btn-primary.btn-block(type='button') Apply
-				.col-xs-3
-					button#cancel.disabled.form-control.btn.btn-danger.btn-block(type='button') Cancel
+								button#cropper.btn.btn-block.btn-default(type='button') Toggle Canvas Cropper
+				.col-md-8
+					.row
+						.col-md-6
+							h4 Available filters
+							#filter-list
+						.col-md-6
+							h4 Filter options
+							#filter-options
+					.row
+						.col-xs-3.col-xs-offset-6
+							button#apply.disabled.form-control.btn.btn-primary.btn-block(type='button') Apply filter
+						.col-xs-3
+							button#cancel.disabled.form-control.btn.btn-danger.btn-block(type='button') Revert filter
 			#scene.row.text-center
 				#loader.hidden &#8635;
 				#image-wrapper
@@ -64,5 +66,5 @@ body
 				.col-xs-3
 					button#unload.form-control.btn.btn-default.btn-block(type='button') Unload
 				.col-xs-3
-					button#save.form-control.btn.btn-success.btn-block(type='button') Save
+					button#save.form-control.btn.btn-success.btn-block(type='button') Save image
 
