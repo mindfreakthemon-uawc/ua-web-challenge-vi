@@ -59,6 +59,12 @@ module.exports = function (grunt) {
 				src: ['**/*.js'],
 				dest: 'root/js'
 			},
+			img: {
+				expand: true,
+				cwd: 'src/img',
+				src: ['**/*.*'],
+				dest: 'root/img'
+			},
 			lib: {
 				expand: true,
 				cwd: 'lib',
@@ -71,6 +77,10 @@ module.exports = function (grunt) {
 			styles: {
 				files: ['src/styles/**/*.styl'],
 				tasks: ['stylus:main']
+			},
+			img: {
+				files: ['src/img/**/*.*'],
+				tasks: ['copy:img']
 			},
 			html: {
 				files: ['src/html/**/*.jade'],
@@ -97,10 +107,10 @@ module.exports = function (grunt) {
 				logConcurrentOutput: true
 			},
 			build: {
-				tasks: ['stylus:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib']
+				tasks: ['stylus:main', 'jade:main', 'jade:templates', 'copy:main', 'copy:lib', 'copy:img']
 			},
 			watch: {
-				tasks: ['watch:styles', 'watch:html', 'watch:templates', 'watch:js', 'watch:livereload']
+				tasks: ['watch:styles', 'watch:html', 'watch:templates', 'watch:js', 'watch:img', 'watch:livereload']
 			},
 			run: {
 				tasks: ['concurrent:watch', 'connect:main']

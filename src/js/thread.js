@@ -3,7 +3,7 @@ importScripts('/lib/require.js');
 require({
 		baseUrl: '/js'
 	},
-	['filters/all'],
+	['filters'],
 	function (filters) {
 		self.addEventListener('message', function (e) {
 			var data = e.data,

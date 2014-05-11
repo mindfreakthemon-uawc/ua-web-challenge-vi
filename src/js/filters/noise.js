@@ -86,8 +86,7 @@ define(function () {
 			},
 			mono: {
 				label: 'Mono noise',
-				type: 'checkbox',
-				value: 1
+				type: 'checkbox'
 			}
 		}
 	};
