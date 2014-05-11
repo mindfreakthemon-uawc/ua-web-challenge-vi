@@ -1,0 +1,11 @@
+if name
+	each v, k in options
+		.form-group
+			if v.type === 'checkbox'
+				label.checkbox-inline= v.label
+					input(type=v.type, class=v.className, name=k, checked=v.checked)
+			else
+				label= v.label
+				input(type=v.type, class=v.className, step=v.step, min=v.min, max=v.max, name=k, value=v.value)
+else
+	p.text-center Select filter

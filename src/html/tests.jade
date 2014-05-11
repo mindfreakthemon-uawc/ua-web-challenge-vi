@@ -1,0 +1,12 @@
+doctype html
+html
+	head
+		link(rel='stylesheet', href='/lib/qunit/qunit.css')
+body
+	#qunit
+	#qunit-fixture
+	script(src='/lib/qunit/qunit.js')
+	script.
+		QUnit.config.autostart = false;
+	script(src='/lib/require.js', data-main='/js/tests/tests.js')
+

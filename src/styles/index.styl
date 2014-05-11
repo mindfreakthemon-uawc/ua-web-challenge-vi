@@ -1,0 +1,82 @@
+#canvas {
+	max-width: 100%;
+}
+
+#image {
+	opacity: 0;
+}
+	
+#image-wrapper {
+	position: absolute;
+}
+
+#scene {
+	background: #eee;
+	border: 1px solid #ccc;
+	padding: 20px 0;
+	margin: 20px 0;
+	position: relative;
+
+	.cropper-container {
+		background: none;
+
+		img {
+			opacity: 0;
+		}
+	}
+}
+
+#form {
+	margin: 0 0 20px;
+}
+
+transform(args...)
+	-moz-transform args
+	-webkit-transform args
+	-o-transform args
+	-ms-transform args
+	-khtml-transform args
+	transform args
+	
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+#loader {
+	display: block;
+	width: 20px;
+	height: 20px;
+
+	font-size: 15px;
+	font-weight: bold;
+	line-height: 20px;
+
+	color: #ff7d00;
+	background: #fff;
+	border: 1px solid #000;
+
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	-webkit-animation-name: spin;
+	-webkit-animation-duration: 4s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+
+	-moz-animation-name: spin;
+	-moz-animation-duration: 4s;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-timing-function: linear;
+
+	animation-name: spin;
+	animation-duration: 4s;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
